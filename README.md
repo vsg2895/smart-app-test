@@ -1,66 +1,179 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Можете реализовать запросы через Postman
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+1.POST - {{url}}/api/auth/register
+request body (form-data) {
+   'name',email,password
+}
+return success
+{
+    "status": true,
+    "message": "User Created Successfully",
+    "token": "6|xsuXswgOH1gRsJP3znfhy0tHR9Pw4lGr5djFy9Lo"
+}
+return error
+{
+    "errors": {
+        "email": [
+            "The email field is required."
+        ]
+    }
+    "status": 422
+}
 
-## About Laravel
+2.POST - {{url}}/api/auth/login
+request body (form-data) {
+   email,password
+}
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+return success {
+    "status": true,
+    "message": "User Logged In Successfully",
+    "token": "7|99luzfQlvUbGIU7snHhZxmgFLveA0UuBGHBvEIVv"
+}
+return error{
+   cerdentials dont match or validation errors 
+}
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+3.GET - {{url}}/api/tasks Таск лист
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+return {
+"data": [
+        {
+            "id": 1,
+            "name": "Task Name update",
+            "deadline": "2022-10-22",
+            "description": "it is description,it is description2222",
+            "user_id": 2,
+            "status": "Wait",
+            "created_at": "2022-10-20T11:00:12.000000Z",
+            "updated_at": "2022-10-20T11:35:14.000000Z"
+        }
+    ]
+}
 
-## Learning Laravel
+4.POST - {{url}}/api/tasks Добавить новый таск
+request body (form-data) {
+   name,deadline,description,user_id,status(необязателmный имеет значение по умолчанию (Pending) допустимые зрачение (Pending,Wait,Test,Ready)) 
+}
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+return success{
+ "data": {
+        "name": "new Task",
+        "deadline": "2022-10-22",
+        "description": "it is description,it is description2222",
+        "user_id": "2",
+        "status": "Wait",
+        "updated_at": "2022-10-20T12:09:07.000000Z",
+        "created_at": "2022-10-20T12:09:07.000000Z",
+        "id": 2
+    }
+}
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+return error{
+validation errors
+}
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+5.PUT - {{url}}/api/tasks/1 Редактировать очередной таск по id
 
-## Laravel Sponsors
+request body (form-data) {
+   name,deadline,description,user_id,status(необязателний имеет значение по умолчанию (Pending))
+}
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+return success{
+ "data": {
+        "name": "new Task Updated",
+        "deadline": "2022-10-22",
+        "description": "it is description updated",
+        "user_id": "2",
+        "status": "Ready",
+        "updated_at": "2022-10-20T12:09:07.000000Z",
+        "created_at": "2022-10-20T12:09:07.000000Z",
+        "id": 2
+    }
+}
 
-### Premium Partners
+return error{
+validation errors or
+Task Not found
+}
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
 
-## Contributing
+5.DELETE - {{url}}/api/tasks/1 Удалить очередной таск по id
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+return success{
+ Task Deleted Successfully
+}
 
-## Code of Conduct
+return error{
+Task Not found
+}
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+6.GET - {{url}}/api/users-tasks/{user} ({user} - id пользователя) таски очередного пользователя    
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+return success{
+    "data": [
+        {
+            "id": 5,
+            "name": "new Task Updateee",
+            "deadline": "2022-10-22",
+            "description": "it is description,it is description2222",
+            "user_id": 2,
+            "status": "Wait",
+            "created_at": "2022-10-20T12:27:20.000000Z",
+            "updated_at": "2022-10-20T12:27:20.000000Z"
+        },
+        {
+            "id": 6,
+            "name": "new Task Updateee222",
+            "deadline": "2022-10-24",
+            "description": "it is description,it is description2222",
+            "user_id": 2,
+            "status": "Ready",
+            "created_at": "2022-10-20T12:27:51.000000Z",
+            "updated_at": "2022-10-20T12:27:51.000000Z"
+        }
+    ]
+}
 
-## License
+return error{
+User Not found
+}
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+7.GET - {{url}}/api/tasks-history история update тасков
+
+return success{
+     "data": [
+        {
+            "id": 2,
+            "task_id": 5,
+            "updated": "{\"name\": \"new Task By Update\", \"status\": \"Ready\", \"user_id\": \"2\", \"deadline\": \"2022-10-24\", \"description\": \"it is description,it is description2222\"}",
+            "created_at": "2022-10-20T12:35:31.000000Z",
+            "updated_at": "2022-10-20T12:35:31.000000Z"
+        },
+        {
+            "id": 3,
+            "task_id": 6,
+            "updated": "{\"name\": \"new Task By Update 6666\", \"status\": \"Ready\", \"user_id\": \"2\", \"deadline\": \"2022-10-24\", \"description\": \"it is description,it is description2222\"}",
+            "created_at": "2022-10-20T12:36:29.000000Z",
+            "updated_at": "2022-10-20T12:36:29.000000Z"
+        }
+    ]
+}
+
+7.GET - {{url}}/api/tasks-history/{task} ({task} - id таска) история update тасков очередного таска
+
+return success{
+      "data": [
+        {
+            "id": 2,
+            "task_id": 5,
+            "updated": "{\"name\": \"new Task By Update\", \"status\": \"Ready\", \"user_id\": \"2\", \"deadline\": \"2022-10-24\", \"description\": \"it is description,it is description2222\"}",
+            "created_at": "2022-10-20T12:35:31.000000Z",
+            "updated_at": "2022-10-20T12:35:31.000000Z"
+        }
+    ]
+}
+
+
+Все запросы кроме login и register проверяютса по Bearer token который генерируетса при логине добавти Authentication => Bearer (Postman) противном случие выдает ошибку Unauthenticated
